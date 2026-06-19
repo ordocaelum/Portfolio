@@ -218,12 +218,16 @@
         .view.active {
             display: flex;
         }
+
+        #orbital-view {
+            flex-direction: row;
+        }
     </style>
 </head>
 <body class="font-body-base overflow-x-hidden">
 
 <!-- Dashboard View -->
-<div id="dashboard-view" class="view active">
+<div id="dashboard-view" class="view active flex-col">
     <!-- Glassmorphic SideNavBar -->
     <nav class="fixed left-0 top-0 h-full w-[280px] bg-surface-container-lowest/70 backdrop-blur-xl border-right border-primary/10 shadow-[0_0_15px_rgba(78,222,163,0.05)] flex flex-col justify-between py-6 z-50">
         <div class="px-6">
@@ -237,7 +241,7 @@
                 </div>
             </div>
             <div class="space-y-1">
-                <a class="text-on-surface-variant py-3 px-6 flex items-center gap-3 transition-colors hover:bg-primary/10 hover:text-primary cursor-pointer view-link" data-view="dashboard">
+                <a class="text-primary bg-secondary-container/20 border-l-2 border-primary py-3 px-6 flex items-center gap-3 transition-all duration-300 ease-in-out cursor-pointer view-link" data-view="dashboard">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-label-caps text-label-caps">Dashboard</span>
                 </a>
@@ -317,8 +321,8 @@
         <!-- Node Portfolio Grid (Bento Style) -->
         <div class="grid grid-cols-12 gap-6">
             <!-- Project Node 01 - Large Featured -->
-            <div class="col-span-12 lg:col-span-8 group relative">
-                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-8 border border-primary/20 hover:border-primary/50 transition-all duration-500 overflow-hidden h-full cursor-pointer project-card" data-project="helios">
+            <div class="col-span-12 lg:col-span-8 group relative cursor-pointer project-card" data-project="helios">
+                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-8 border border-primary/20 hover:border-primary/50 transition-all duration-500 overflow-hidden h-full">
                     <div class="scanline"></div>
                     <div class="flex justify-between items-start mb-6 relative z-10">
                         <div>
@@ -390,8 +394,8 @@
             </div>
 
             <!-- Node 02 - Standard -->
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 group">
-                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-pointer project-card" data-project="neural_mesh">
+            <div class="col-span-12 md:col-span-6 lg:col-span-4 group cursor-pointer project-card" data-project="neural_mesh">
+                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div class="w-12 h-12 bg-surface-container border border-primary/20 flex items-center justify-center">
                             <span class="material-symbols-outlined text-primary">memory</span>
@@ -408,8 +412,8 @@
             </div>
 
             <!-- Node 03 - Standard -->
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 group">
-                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-pointer project-card" data-project="aegis_gate">
+            <div class="col-span-12 md:col-span-6 lg:col-span-4 group cursor-pointer project-card" data-project="aegis_gate">
+                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div class="w-12 h-12 bg-surface-container border border-primary/20 flex items-center justify-center">
                             <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shield</span>
@@ -426,8 +430,8 @@
             </div>
 
             <!-- Node 04 - Standard -->
-            <div class="col-span-12 md:col-span-6 lg:col-span-4 group">
-                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300 cursor-pointer project-card" data-project="quantum_sync">
+            <div class="col-span-12 md:col-span-6 lg:col-span-4 group cursor-pointer project-card" data-project="quantum_sync">
+                <div class="cyber-card bg-surface-container-lowest/60 backdrop-blur-md p-6 border border-primary/20 hover:border-primary/50 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div class="w-12 h-12 bg-surface-container border border-primary/20 flex items-center justify-center">
                             <span class="material-symbols-outlined text-primary">cloud_done</span>
@@ -528,8 +532,8 @@
         </div>
     </header>
 
-    <!-- Globe Canvas -->
-    <div class="ml-[280px] pt-16 pb-10 w-[calc(100%-280px)] h-[calc(100vh-64px)] relative">
+    <!-- Globe Canvas Container -->
+    <div class="ml-[280px] pt-16 pb-10 w-[calc(100%-280px)] h-[calc(100vh-64px)] relative flex-1">
         <canvas id="canvas"></canvas>
         
         <!-- Orbital Stats Overlay -->
@@ -640,7 +644,469 @@
     </div>
 </div>
 
-<script src="js/app.js"></script>
-<script src="js/globe.js"></script>
+<script>
+// Inline app.js - Project data and view management
+const projects = {
+    helios: {
+        title: "PROJECT HELIOS",
+        region: "NODE_01 // US-EAST-1",
+        description: "Next-gen orbital data visualization engine built with Three.js and custom GLSL shaders. Focused on real-time satellite telemetry mapping.",
+        fullDescription: "PROJECT HELIOS is a sophisticated orbital data visualization platform designed to visualize real-time satellite telemetry and orbital mechanics. Built with Three.js and WebGL, it features custom GLSL shaders for advanced rendering techniques and immersive visualization.",
+        tech: ["TYPESCRIPT", "THREE.JS", "REACT", "GLSL"],
+        status: "STABLE",
+        features: [
+            "Real-time satellite position tracking",
+            "Custom orbital mechanics simulation",
+            "Interactive 3D data visualization",
+            "Custom GLSL shader pipeline",
+            "Multi-layer telemetry overlay system"
+        ],
+        poiCoordinates: { latitude: 0, longitude: 0 },
+        uptime: "3224H"
+    },
+    neural_mesh: {
+        title: "NEURAL_MESH",
+        region: "NODE_02 // US-WEST-2",
+        description: "Distributed AI inference node leveraging WebGPU for localized processing units.",
+        fullDescription: "NEURAL_MESH is a decentralized AI inference platform that distributes computation across edge nodes using WebGPU for GPU-accelerated processing. It enables real-time machine learning inference at the network edge.",
+        tech: ["TYPESCRIPT", "WEBGPU", "RUST", "WASM"],
+        status: "BETA",
+        features: [
+            "Distributed inference architecture",
+            "WebGPU GPU acceleration",
+            "Edge node orchestration",
+            "Model quantization & optimization",
+            "Real-time performance monitoring"
+        ],
+        poiCoordinates: { latitude: 40, longitude: -120 },
+        uptime: "812H"
+    },
+    aegis_gate: {
+        title: "AEGIS_GATE",
+        region: "NODE_03 // EU-CENTRAL-1",
+        description: "Cyber-security firewall implementation with zero-knowledge proof authentication protocols.",
+        fullDescription: "AEGIS_GATE is an advanced cybersecurity platform implementing zero-knowledge proof authentication and advanced threat detection. It provides enterprise-grade security with privacy-preserving authentication mechanisms.",
+        tech: ["RUST", "CRYPTOGRAPHY", "ZKP", "GOLANG"],
+        status: "PRODUCTION",
+        features: [
+            "Zero-knowledge proof authentication",
+            "Advanced threat detection engine",
+            "Encrypted traffic analysis",
+            "Rate limiting & DDoS protection",
+            "Real-time security analytics"
+        ],
+        poiCoordinates: { latitude: 50, longitude: 15 },
+        uptime: "14212H"
+    },
+    quantum_sync: {
+        title: "QUANTUM_SYNC",
+        region: "NODE_04 // AP-SOUTHEAST-1",
+        description: "Real-time state synchronization module for massively multiplayer concurrent environments.",
+        fullDescription: "QUANTUM_SYNC provides real-time state synchronization for large-scale multiplayer applications. It uses advanced conflict resolution algorithms and optimistic updates to maintain consistency across distributed systems.",
+        tech: ["TYPESCRIPT", "NODEJS", "REDIS", "WEBSOCKETS"],
+        status: "TESTING",
+        features: [
+            "Real-time state synchronization",
+            "Optimistic update resolution",
+            "Conflict-free replicated data types",
+            "Scalable pub-sub messaging",
+            "Network latency compensation"
+        ],
+        poiCoordinates: { latitude: -10, longitude: 105 },
+        uptime: "12H"
+    }
+};
+
+// View management
+function switchView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const targetView = document.getElementById(`${viewName}-view`);
+    if (targetView) {
+        targetView.classList.add('active');
+        
+        if (viewName === 'orbital') {
+            setTimeout(() => {
+                if (window.initGlobe) {
+                    window.initGlobe();
+                }
+            }, 100);
+        }
+    }
+}
+
+// View link navigation
+document.querySelectorAll('.view-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const view = e.currentTarget.getAttribute('data-view');
+        switchView(view);
+    });
+});
+
+// Project card click handlers
+document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+        const projectKey = e.currentTarget.getAttribute('data-project');
+        showProjectModal(projectKey);
+    });
+});
+
+// Modal management
+function showProjectModal(projectKey) {
+    const project = projects[projectKey];
+    if (!project) return;
+
+    const modal = document.getElementById('project-modal');
+    
+    document.getElementById('modal-tag').textContent = project.region;
+    document.getElementById('modal-title').textContent = project.title;
+    document.getElementById('modal-description').textContent = project.fullDescription;
+    document.getElementById('modal-tech').textContent = project.tech.join(", ");
+    document.getElementById('modal-status').textContent = project.status;
+    
+    const detailsDiv = document.getElementById('modal-details');
+    detailsDiv.innerHTML = `
+        <p><strong>Uptime:</strong> ${project.uptime}</p>
+        <p><strong>Type:</strong> Advanced distributed computing node</p>
+        <p><strong>Deployment:</strong> Multi-region active deployment</p>
+    `;
+    
+    const featuresList = document.getElementById('modal-features');
+    featuresList.innerHTML = project.features.map(f => `<li>${f}</li>`).join('');
+    
+    modal.classList.remove('hidden');
+}
+
+function closeProjectModal() {
+    document.getElementById('project-modal').classList.add('hidden');
+}
+
+// Modal close handlers
+document.getElementById('close-modal').addEventListener('click', closeProjectModal);
+document.getElementById('modal-close-btn').addEventListener('click', closeProjectModal);
+
+// Close modal on backdrop click
+document.getElementById('project-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        closeProjectModal();
+    }
+});
+
+// Micro-interactions for hover effects on dashboard
+document.querySelectorAll('.cyber-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        const scanline = card.querySelector('.scanline');
+        if (scanline) scanline.style.animationDuration = '1.5s';
+    });
+    card.addEventListener('mouseleave', () => {
+        const scanline = card.querySelector('.scanline');
+        if (scanline) scanline.style.animationDuration = '4s';
+    });
+});
+
+// Simulating data updates
+setInterval(() => {
+    const latencies = ['12.4', '11.8', '13.1', '12.9', '12.1'];
+    const target = document.querySelector('.neon-glow');
+    if (target) {
+        const newValue = latencies[Math.floor(Math.random() * latencies.length)];
+        target.innerText = newValue + ' MS';
+    }
+}, 3000);
+
+// Export for globe.js
+window.portfolioData = {
+    projects,
+    switchView,
+    showProjectModal,
+    closeProjectModal
+};
+</script>
+
+<script>
+// Inline globe.js - Three.js globe visualization
+let scene, camera, renderer, globe, controls;
+let poiMarkers = [];
+let selectedPOI = null;
+let isGlobeInitialized = false;
+
+function initGlobe() {
+    if (isGlobeInitialized) return;
+    
+    const canvas = document.getElementById('canvas');
+    if (!canvas) return;
+
+    // Scene setup
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050505);
+
+    // Camera setup
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 10000);
+    camera.position.z = 2.5;
+
+    // Renderer setup
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // Add subtle lighting
+    const ambientLight = new THREE.AmbientLight(0x4edea3, 0.4);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0x4edea3, 0.6);
+    pointLight.position.set(5, 3, 5);
+    scene.add(pointLight);
+
+    // Create globe
+    createGlobe();
+
+    // Create POI markers
+    createPOIMarkers();
+
+    // Mouse controls
+    setupControls();
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize);
+
+    // Start animation loop
+    animate();
+
+    isGlobeInitialized = true;
+}
+
+function createGlobe() {
+    // Create sphere geometry for globe
+    const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+    // Create canvas texture for globe
+    const textureCanvas = document.createElement('canvas');
+    textureCanvas.width = 2048;
+    textureCanvas.height = 1024;
+    const ctx = textureCanvas.getContext('2d');
+
+    // Dark base color
+    ctx.fillStyle = '#0e0e0e';
+    ctx.fillRect(0, 0, textureCanvas.width, textureCanvas.height);
+
+    // Add subtle grid
+    ctx.strokeStyle = 'rgba(78, 222, 163, 0.1)';
+    ctx.lineWidth = 1;
+
+    // Latitude lines
+    for (let lat = -90; lat <= 90; lat += 30) {
+        const y = (lat + 90) * (textureCanvas.height / 180);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(textureCanvas.width, y);
+        ctx.stroke();
+    }
+
+    // Longitude lines
+    for (let lon = -180; lon <= 180; lon += 30) {
+        const x = (lon + 180) * (textureCanvas.width / 360);
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, textureCanvas.height);
+        ctx.stroke();
+    }
+
+    // Add some land masses (simplified)
+    ctx.fillStyle = 'rgba(78, 222, 163, 0.15)';
+    ctx.fillRect(150, 250, 200, 150);
+    ctx.fillRect(250, 450, 100, 150);
+    ctx.fillRect(450, 250, 150, 100);
+    ctx.fillRect(500, 350, 200, 150);
+    ctx.fillRect(700, 200, 300, 200);
+    ctx.fillRect(950, 500, 120, 100);
+
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    const material = new THREE.MeshPhongMaterial({
+        map: texture,
+        emissive: 0x4edea3,
+        emissiveIntensity: 0.2
+    });
+
+    globe = new THREE.Mesh(geometry, material);
+    scene.add(globe);
+
+    // Add glow effect
+    const glowGeometry = new THREE.SphereGeometry(1.02, 32, 32);
+    const glowMaterial = new THREE.MeshBasicMaterial({
+        color: 0x4edea3,
+        transparent: true,
+        opacity: 0.15
+    });
+    const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+    scene.add(glowMesh);
+}
+
+function createPOIMarkers() {
+    const projectsArray = Object.entries(window.portfolioData.projects);
+
+    projectsArray.forEach(([key, project]) => {
+        const lat = project.poiCoordinates.latitude;
+        const lon = project.poiCoordinates.longitude;
+
+        const phi = (90 - lat) * Math.PI / 180;
+        const theta = (lon + 180) * Math.PI / 180;
+
+        const x = Math.sin(phi) * Math.cos(theta);
+        const y = Math.cos(phi);
+        const z = Math.sin(phi) * Math.sin(theta);
+
+        const markerGeometry = new THREE.SphereGeometry(0.08, 16, 16);
+        const markerMaterial = new THREE.MeshBasicMaterial({
+            color: 0x4edea3,
+            emissive: 0x4edea3,
+            emissiveIntensity: 0.8
+        });
+        const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+        marker.position.set(x, y, z);
+        marker.userData.projectKey = key;
+        marker.userData.project = project;
+        scene.add(marker);
+
+        marker.userData.pulse = {
+            originalScale: 0.08,
+            time: Math.random() * Math.PI * 2
+        };
+
+        poiMarkers.push(marker);
+    });
+}
+
+function setupControls() {
+    const canvas = document.getElementById('canvas');
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            globe.rotation.y += deltaX * 0.01;
+            globe.rotation.x += deltaY * 0.01;
+
+            poiMarkers.forEach(marker => {
+                marker.rotation.y += deltaX * 0.01;
+                marker.rotation.x += deltaY * 0.01;
+            });
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        
+        const zoomSpeed = 0.1;
+        const direction = e.deltaY > 0 ? 1 : -1;
+        
+        camera.position.z += direction * zoomSpeed;
+        camera.position.z = Math.max(1.5, Math.min(5, camera.position.z));
+
+        const zoomPercent = Math.round((5 - camera.position.z) / (5 - 1.5) * 100);
+        document.getElementById('zoom-level').textContent = zoomPercent + '%';
+    });
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    canvas.addEventListener('click', (event) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(poiMarkers);
+
+        if (intersects.length > 0) {
+            const selected = intersects[0].object;
+            selectPOI(selected);
+        } else {
+            deselectPOI();
+        }
+    });
+}
+
+function selectPOI(marker) {
+    selectedPOI = marker;
+    marker.material.emissiveIntensity = 1;
+    marker.scale.set(1.5, 1.5, 1.5);
+
+    const panel = document.getElementById('project-info-panel');
+    document.getElementById('poi-region').textContent = marker.userData.project.region;
+    document.getElementById('poi-title').textContent = marker.userData.project.title;
+    document.getElementById('poi-description').textContent = marker.userData.project.description;
+    
+    document.getElementById('view-project-btn').onclick = () => {
+        window.portfolioData.showProjectModal(marker.userData.projectKey);
+    };
+    
+    panel.classList.remove('hidden');
+}
+
+function deselectPOI() {
+    if (selectedPOI) {
+        selectedPOI.material.emissiveIntensity = 0.8;
+        selectedPOI.scale.set(1, 1, 1);
+        selectedPOI = null;
+    }
+    document.getElementById('project-info-panel').classList.add('hidden');
+}
+
+function onWindowResize() {
+    const canvas = document.getElementById('canvas');
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (globe && !selectedPOI) {
+        globe.rotation.y += 0.0001;
+    }
+
+    poiMarkers.forEach(marker => {
+        const pulse = marker.userData.pulse;
+        pulse.time += 0.05;
+        const pulseScale = 1 + Math.sin(pulse.time) * 0.3;
+        marker.scale.set(pulseScale, pulseScale, pulseScale);
+        marker.lookAt(camera.position);
+    });
+
+    renderer.render(scene, camera);
+}
+
+window.initGlobe = initGlobe;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const orbitalView = document.getElementById('orbital-view');
+    if (orbitalView && orbitalView.classList.contains('active')) {
+        setTimeout(initGlobe, 100);
+    }
+});
+</script>
 </body>
 </html>
